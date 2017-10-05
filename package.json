@@ -1,0 +1,24 @@
+{
+  "name": "Contacts-app",
+  "version": "0.5.0",
+  "description": "A simple app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app.js",
+    "watch": "nodemon -e js,html,css ./app.js"
+  },
+  "author": "Chechur",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "body-parser": "^1.18.2",
+    "bower": "^1.8.2",
+    "es6-promisify": "^5.0.0",
+    "express": "^4.16.1",
+    "mongoose": "^4.11.14",
+    "nodemailer": "^4.1.2",
+    "validator": "^9.0.0"
+  }
+}

@@ -1,0 +1,134 @@
+<div id="container" class="row" ng-controller="ContactsCtrl">
+<div class="large-10 columns">
+	<div data-alert ng-show="msg" class="alert-box success">{{msg}}</div>
+
+	<!-- Show Contact -->
+	<div class="row" ng-show="contactShow">
+		<div class="panel">
+			<h3>{{name}} {{surname}}</h3>
+			<h5>{{age}}, {{gender}}</h5>
+			<ul>
+				<li><strong>Email Address</strong>: {{email}}</li>
+			</ul>
+		</div>
+	</div>
+
+<!-- Add Contact-->
+<form ng-submit="addFormSubmit()" ng-show="addFormShow">
+  		<h3>Add Contact</h3>
+  		<!-- Add Form -->
+  		<div class="row">
+		    <div class="large-6 columns">
+		      <label>First Name:
+		        <input type="text" ng-model="name" placeholder="First Name" required />
+		      </label>
+		    </div>
+		    <div class="large-6 columns">
+		      <label>Last Name:
+		        <input type="text" ng-model="surname" placeholder="Last Name" required />
+		      </label>
+		    </div>
+		 </div>
+		 <div class="row">
+		    <div class="large-6 columns">
+		      <label>Age:
+		        <input type="number" ng-model="age" placeholder="Age" />
+		      </label>
+		    </div>
+		    <div class="large-6 columns">
+		      <label>Email:
+		        <input type="text" ng-model="email" placeholder="Email" required />
+		      </label>
+		    </div>
+		 </div>
+		 <fieldset class="large-6 cell">
+    	<legend>Gender</legend>
+	    <input type="radio" ng-model="gender" value="Male"><label>Male</label>
+	    <input type="radio" ng-model="gender" value="Female"><label>Female</label>
+  	</fieldset>
+		 <div class="row">
+		    <div class="large-12 columns">
+					   <a class="button" ng-click="hide()" ng-show="addFormShow">Cancel</a>
+		        <input type="submit" value="Add Contact" class="button" />
+		    </div>
+		 </div>
+	</form>
+
+
+	<!-- Edit Contact-->
+	<form ng-submit="editFormSubmit()" ng-show="editFormShow">
+  		<h3>Edit Contact</h3>
+  		<!-- Add Form -->
+			<div class="row">
+		    <div class="large-6 columns">
+		      <label>First Name:
+		        <input type="text" ng-model="name" placeholder="First Name" required />
+		      </label>
+		    </div>
+		    <div class="large-6 columns">
+		      <label>Last Name:
+		        <input type="text" ng-model="surname" placeholder="Last Name" required />
+		      </label>
+		    </div>
+		 </div>
+		 <div class="row">
+		    <div class="large-6 columns">
+		      <label>Age:
+		        <input type="number" ng-model="age" placeholder="Age" />
+		      </label>
+		    </div>
+		    <div class="large-6 columns">
+		      <label>Email:
+		        <input type="text" ng-model="email" placeholder="Email" required />
+		      </label>
+		    </div>
+		 </div>
+		 <fieldset class="large-6 cell">
+    	<legend>Gender</legend>
+	    <input type="radio" ng-model="gender" value="Male"><label>Male</label>
+	    <input type="radio" ng-model="gender" value="Female"><label>Female</label>
+  	</fieldset>
+		 <div class="row">
+		    <div class="large-12 columns">
+						<a class="button" ng-click="hide()">Cancel</a>
+		        <input type="submit" value="Update Contact" class="button" />
+		    </div>
+		 </div>
+	</form>
+
+	<h3>Your Contacts ({{contacts.length}}) <span class="right"ng-show="terminateByAge">  {{display}}</span></h3>
+     <table>
+	  <thead>
+	    <tr>
+	      <th width="200px">Name</th>
+	      <th width="200px" ng-click="sortByAge()">Age</th>
+	      <th width="25%">Email</th>
+	      <th width="25%">Actions</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat ="contact in contacts">
+	      <td><a ng-click="showContact(contact)">{{contact.name}} {{contact.surname}}</a></td>
+	      <td>{{contact.age}}</td>
+	      <td>{{contact.email}}</td>
+	      <td><a class="button tiny" ng-click="showEditForm(contact)">Edit</a>
+	      	<a class="button tiny alert" ng-click="removeContact(contact)">Delete</a></td>
+	    </tr>
+	  </tbody>
+	</table>
+  </div>
+  <div class="small-12 large-2 columns">
+		<a class="small-font button" data-reveal-id="myModal">Terminate By Age</a>
+    <a class="small-font button" ng-click="showAddForm()" ng-hide="addFormShow">Add Contact</a>
+    <a class="button large" ng-click="hide()" ng-show="addFormShow">-</a>
+    <a class="button large" ng-click="hide()" ng-show="contactShow">-</a>
+  </div>
+
+	<div id="myModal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+	  <h2 id="modalTitle">Are You Sure?</h2>
+		<a class="button large close-reveal-modal my-modal">No</a>
+    <a class="button large alert close-reveal-modal my-modal" class="close-reveal-modal" ng-click="terminateByAge()">Yes, Terminate Everyone!</a>
+	  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>
+
+</div>
