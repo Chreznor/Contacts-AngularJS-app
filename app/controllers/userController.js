@@ -6,6 +6,7 @@ const mail = require('../handlers/mail');
 exports.addContact = async (req, res) => {
   //save new contact
   const user = await (new User(req.body)).save();
+  res.sendStatus(200);
 
   //count contacts who are older, younger or of the same age
   const older = await User.find({age: {$gt: parseFloat(user.age)}}).count();
@@ -38,6 +39,7 @@ exports.updateContact = async (req, res) => {
   	new: true, // return the new user instead of the old one
   	runValidators: true
   }).exec();
+  res.sendStatus(200);
   console.log('Contact updated');
 };
 
@@ -45,5 +47,6 @@ exports.deleteContact = async (req, res) => {
   // find and delete the contact
   console.log(req.body._id);
   const deleteUser = await User.findOneAndRemove( {_id: req.body._id} ).exec();
+  res.sendStatus(200);
   console.log('Contact deleted');
 }

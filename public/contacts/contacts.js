@@ -17,34 +17,6 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
     console.log(res.data);
     })
   }
-
-  //doesn't take into account when there are equal ages
-  $scope.terminateByAge = () => {
-    timer();
-    $scope.sortByAge();
-
-    //starts the countdown
-    let countdown = setInterval(function() {
-      setTimeout(() => {
-        $scope.sortByAge();
-      }, 500)
-
-      let oldest = $scope.contacts[0];
-      timer();
-
-      $scope.contacts.forEach(contact => {
-        if(contact.age > oldest.age) {
-          oldest = contact;
-        }
-      })
-      console.log(oldest);
-      $scope.removeContact(oldest);
-      if (!$scope.contacts) {
-        clearInterval(countdown);
-      }
-    }, 120 * 1000);
-  };
-
   getContacts();
 
 	// Show Add Form
@@ -73,7 +45,8 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
     $scope.editFormShow = false;
 	}
 
-	// Submit Contact
+
+  // Submit Contact
   $scope.addFormSubmit = function(){
 	   console.log('Adding Contact...');
 
@@ -87,9 +60,10 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
       gender: $scope.gender
     };
 
-    $http.post('/api/contacts', data);
+    $http.post('/api/contacts', data).then((res) => {
+      getContacts();
+    });
 
-    getContacts();
 
   	// Clear Form
   	clearFields();
@@ -116,9 +90,10 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
     };
 
 		// Get Record
-		$http.post('/api/contact-update', data);
+		$http.post('/api/contact-update', data).then((res) => {
+      getContacts();
+    });
 
-    getContacts();
 		clearFields();
 
 		// Hide Form
@@ -144,11 +119,15 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
 	$scope.removeContact = function(contact){
 		console.log('Removing Contact');
 
-		$http.post('/api/contact-delete', contact);
-
-    getContacts();
+		$http.post('/api/contact-delete', contact).then((res) => {
+      getContacts();
+    });
 
 		$scope.msg=`Contact Removed. Bye-bye, ${contact.name}!`;
+
+    setTimeout(() => {
+      $scope.msg = '';
+    }, 500);
 	}
 
 	// Clear $scope Fields
@@ -161,6 +140,34 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
 		$scope.email = '';
 		$scope.gender = '';
 	}
+
+  //Terminate by age function
+  //doesn't take into account when there are equal ages
+  $scope.terminateByAge = () => {
+    timer();
+    $scope.sortByAge();
+
+    //starts the countdown
+    let countdown = setInterval(function() {
+      setTimeout(() => {
+        $scope.sortByAge();
+      }, 500);
+
+      let oldest = $scope.contacts[0];
+      timer();
+
+      $scope.contacts.forEach(contact => {
+        if(contact.age > oldest.age) {
+          oldest = contact;
+        }
+      })
+      console.log(oldest);
+      $scope.removeContact(oldest);
+      if (!$scope.contacts) {
+        clearInterval(countdown);
+      }
+    }, 120 * 1000);
+  };
 
   //timer script
 
@@ -189,7 +196,6 @@ angular.module('myContacts.contacts', ['ngRoute', 'ngResource'])
     const remSec = seconds%60;
     return `${min}:${remSec < 10 ? '0' + remSec : remSec}`;
   }
-
 
   //sorting the contacts scope by age(desc)
   $scope.sortByAge = () => {
